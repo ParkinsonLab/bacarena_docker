@@ -49,8 +49,6 @@ ENV LC_ALL en_US.UTF-8
 
 RUN apt-get install -y r-base
 
-WORKDIR /R_packages
-RUN wget https://cran.r-project.org/src/contrib/usethis_2.2.2.tar.gz 
 
 RUN apt-get install -y libxml2-dev \
 && apt-get install -y libfontconfig1-dev \
@@ -59,4 +57,18 @@ RUN apt-get install -y libxml2-dev \
 && apt-get install -y libfreetype6-dev \
 && apt-get install -y libpng-dev \
 && apt-get install -y libtiff5-dev \
-&& apt-get install -y libjpeg-dev
+&& apt-get install -y libjpeg-dev \
+&& apt-get install -y libssl-dev
+
+WORKDIR /R_packages
+ADD https://cran.r-project.org/src/contrib/usethis_2.2.2.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/BacArena_1.8.2.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/ragg_1.2.6.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+ADD http://compsysbio.org/bacarena_deps/install_good_deps.R /R_packages
+ADD https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz /R_packages
+
+
+RUN Rscript /R_packages/install_good_deps.R
+
+RUN Rscript /R_packages/install_bacarena_deps.R

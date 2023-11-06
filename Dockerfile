@@ -64,11 +64,22 @@ WORKDIR /R_packages
 ADD https://cran.r-project.org/src/contrib/usethis_2.2.2.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/BacArena_1.8.2.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/ragg_1.2.6.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
-ADD http://compsysbio.org/bacarena_deps/install_good_deps.R /R_packages
+
 ADD https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz /R_packages
 
+ADD http://compsysbio.org/bacarena_deps/install_good_deps.R /R_packages
 
+
+RUN apt-get install -y libudunits2-dev
 RUN Rscript /R_packages/install_good_deps.R
 
-RUN Rscript /R_packages/install_bacarena_deps.R
+ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/sf_1.0-13.tar.gz /R_packages
+
+RUN apt-get install -y libgdal-dev
+
+#ADD http://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+
+#RUN Rscript /R_packages/install_bacarena_deps.R

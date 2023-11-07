@@ -71,6 +71,6 @@ ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packa
 ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+ADD https://raw.githubusercontent.com/ParkinsonLab/bacarena_docker/1.0.0/install_bacarena_deps.R /R_packages
 
 RUN Rscript /R_packages/install_bacarena_deps.R

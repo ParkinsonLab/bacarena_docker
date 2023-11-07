@@ -1,9 +1,28 @@
 
 
-install.packages("~/storage/bacarena_docker/sf_1.0-13.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
-install.packages("deSolve", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
-install.packages("ggplot2", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
-install.packages("~/storage/bacarena_docker/sybil_2.2.0.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+install.packages("systemfonts", "/R_packages", dependencies = TRUE)
+install.packages("textshaping", "/R_packages", dependencies = TRUE)
+install.packages("/R_packages/ragg_1.2.6.tar.gz", "/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+install.packages("pkgdown", "/R_packages", dependencies = TRUE)
+install.packages("devtools", "/R_packages", dependencies = TRUE)
+install.packages("plyr", "/R_packages", dependencies = TRUE)
 
-install.packages("~/storage/bacarena_docker/BacArena_1.8.2.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+
+install.packages("/R_packages/sf_1.0-8.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+install.packages("deSolve", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("/R_packages/Hmisc_5.1.0.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+
+install.packages("ggplot2", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("/R_packages/sybil_2.2.0.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+install.packages("ReacTran", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("reshape2", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("glpkAPI", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("igraph", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("R.matlab", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+install.packages("/R_packages/Rcpp_1.0.10.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+install.packages("/R_packages/RcppEigen_0.3.3.9.3.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
+
+install.packages("/R_packages/RcppArmadillo_0.12.6.4.0.tar.gz", "~/storage/bacarena_docker/R_packages", dependencies = TRUE)
+
+install.packages("/R_packages/BacArena_1.8.2.tar.gz", "~/storage/bacarena_docker/R_packages", repos = NULL, type = "source", dependencies = TRUE)
 

@@ -1,0 +1,6 @@
+library("sybil", lib.loc="/R_packages")
+library("rootSolve", lib.loc="/R_packages")
+library("deSolve", lib.loc="/R_packages")
+library("shape", lib.loc="/R_packages")
+library("ReacTran", lib.loc="/R_packages")
+library("BacArena", lib.loc="/R_packages")

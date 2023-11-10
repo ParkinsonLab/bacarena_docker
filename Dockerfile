@@ -76,5 +76,4 @@ ADD https://raw.githubusercontent.com/ParkinsonLab/bacarena_docker/1.0.0/load_ba
 
 
 RUN Rscript /R_packages/install_bacarena_deps.R
-RUN Rscript /R_packages/load_bacarena_libs.R
 

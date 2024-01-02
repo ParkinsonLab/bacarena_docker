@@ -76,5 +76,8 @@ ADD https://raw.githubusercontent.com/ParkinsonLab/bacarena_docker/1.0.0/load_ba
 
 
 RUN Rscript /R_packages/install_bacarena_deps.R
-RUN chmod -R 555 /R_packages
+RUN chmod -R 777 /R_packages
 
+
+WORKDIR /
+CMD ["bash"]

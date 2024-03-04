@@ -75,6 +75,11 @@ ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
 ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
 ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
 
+ADD https://github.com/sbmlteam/libsbml/archive/refs/tags/v5.20.2.tar.gz /R_packages
+RUN tar -xzvf v5.20.2.tar.gz
+WORKDIR libsbml-5.20.2
+RUN sh configure \
+&& make
 
 RUN Rscript /R_packages/install_bacarena_deps.R
 RUN chmod -R 777 /R_packages

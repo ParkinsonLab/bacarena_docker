@@ -24,5 +24,7 @@ install.packages("/R_packages/RcppEigen_0.3.3.9.3.tar.gz", "/R_packages", repos 
 
 install.packages("/R_packages/RcppArmadillo_0.12.6.4.0.tar.gz", "/R_packages", dependencies = TRUE)
 
+install.packages("/R_packages/sybilSBML_3.1.2.tar.gz", "/R_packages", dependencies = TRUE)
+
 install.packages("/R_packages/BacArena_1.8.2.tar.gz", "/R_packages", repos = NULL, type = "source", dependencies = TRUE)
 

@@ -2,3 +2,5 @@
 Rcpp_1.0.10.tar.gz
 
 *.sif
+
+*.xml

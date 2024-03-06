@@ -72,35 +72,28 @@ ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
 ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
-ADD https://compsysbio.org/bacarena_deps/install_exp_deps.R /R_packages
+
 ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
 ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
 
-ADD https://github.com/sbmlteam/libsbml/archive/refs/tags/v5.20.2.tar.gz /R_packages
-RUN tar -xzvf v5.20.2.tar.gz
-WORKDIR libsbml-5.20.2
-RUN sh configure \
---prefix=/usr/local/ \
---enable-cpp-namespace \
---enable-fbc \
---enable-shared \
---with-gnu-ld \
---enable-layout \
---enable-comp \
---enable-qual \
---enable-groups \
---enable-compression \
---enable-shared-version \
-&& make \
-&& make install
+#ADD https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Linux/64-bit/libSBML-5.18.0-Linux-x64.deb /R_packages
+ADD http://compsysbio.org/bacarena_deps/libSBML-5.18.0-Linux-x64.deb /R_packages
+RUN dpkg -i libSBML-5.18.0-Linux-x64.deb
 
-RUN export DYLD_LIBRARY_PATH=/usr/local/lib
-RUN Rscript /R_packages/install_bacarena_deps.R
-WORKDIR /
+ADD http://compsysbio.org/bacarena_deps/libSBML_5.18.0.tar.gz /R_packages
+RUN R CMD INSTALL libSBML_5.18.0.tar.gz
+
+
+RUN export LD_LIBRARY_PATH=/usr/lib64
+#RUN Rscript /R_packages/install_bacarena_deps.R
+ENV PATH="${PATH}:/usr/lib64"
+RUN ldconfig
+ADD https://compsysbio.org/bacarena_deps/install_exp_deps.R /R_packages
+#WORKDIR /
 RUN Rscript /R_packages/install_exp_deps.R
-ADD https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz /R_packages
+#ADD https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz /R_packages
 
-RUN chmod -R 777 /R_packages
+#RUN chmod -R 777 /R_packages
 
 
 

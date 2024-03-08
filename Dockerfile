@@ -50,11 +50,30 @@ RUN conda install -c conda-forge -y r-glpkAPI
 RUN conda install -c bioconda -y libsbml
 
 RUN apt-get install -y r-base
-ADD wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.0.1.tar.gz /R_packages
-
-
-
 WORKDIR /R_packages
+ADD https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.0.1.tar.gz /R_packages
+
+ADD http://compsysbio.org/bacarena_deps/BacArena_1.8.2.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/ragg_1.2.6.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/sybil_2.2.0.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
+ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+
+ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
+ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
+
+#ADD https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Linux/64-bit/libSBML-5.18.0-Linux-x64.deb /R_packages
+ADD http://compsysbio.org/bacarena_deps/libSBML-5.18.0-Linux-x64.deb /R_packages
+#RUN dpkg -i libSBML-5.18.0-Linux-x64.deb
+
+ADD http://compsysbio.org/bacarena_deps/libSBML_5.18.0.tar.gz /R_packages
+#RUN R CMD INSTALL libSBML_5.18.0.tar.gz
+
+
+
 
 
 

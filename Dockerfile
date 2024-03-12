@@ -1,7 +1,6 @@
-#FROM continuumio/anaconda3
-#version 1.0.0: 
 
-FROM continuumio/miniconda3
+#FROM continuumio/miniconda3
+FROM ubuntu:22.04
 MAINTAINER Billy Law
 
 ENV TZ=America/Canada
@@ -45,36 +44,48 @@ RUN apt-get update \
 && apt-get install -y libudunits2-dev
 
 RUN apt-get install -y lsb-release
-RUN conda install -c conda-forge -y r-sybil
-RUN conda install -c conda-forge -y r-glpkAPI
-RUN conda install -c bioconda -y libsbml
+#RUN conda install -c conda-forge -y r-sybil
+#RUN conda install -c conda-forge -y r-glpkAPI
+#RUN conda install -c bioconda -y libsbml
 
 RUN apt-get install -y r-base
+
 WORKDIR /R_packages
-ADD https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.0.1.tar.gz /R_packages
 
-ADD http://compsysbio.org/bacarena_deps/BacArena_1.8.2.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/ragg_1.2.6.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/sybil_2.2.0.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
-ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
-ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+RUN wget https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz -O libSBML_R_bindings.tar.gz
+RUN wget https://github.com/sbmlteam/libsbml/archive/refs/tags/v5.20.2.zip -O libSBML_sys.zip
+RUN unzip libSBML_sys.zip
+WORKDIR libsbml-5.20.2
+RUN sh configure
+RUN make
+RUN make install
+RUN ldconfig
+RUN export LD_LIBRARY_PATH=/usr/local/lib
+WORKDIR /R_packages
+RUN R CMD INSTALL libSBML_R_bindings.tar.gz
+#ADD https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz /R_packages
+#ADD http://compsysbio.org/bacarena_deps/sybil_2.2.0.tar.gz /R_packages
+#ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
 
-ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
-ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
-
-#ADD https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Linux/64-bit/libSBML-5.18.0-Linux-x64.deb /R_packages
-ADD http://compsysbio.org/bacarena_deps/libSBML-5.18.0-Linux-x64.deb /R_packages
-#RUN dpkg -i libSBML-5.18.0-Linux-x64.deb
-
-ADD http://compsysbio.org/bacarena_deps/libSBML_5.18.0.tar.gz /R_packages
-#RUN R CMD INSTALL libSBML_5.18.0.tar.gz
-
+#RUN R CMD INSTALL libSBML_5.20.2.tar.gz
+#RUN R CMD INSTALL sybil_2.2.0.tar.gz
+#ADD https://repo.anaconda.com/archive/Anaconda3-2024.02-1-Linux-x86_64.sh /R_packages
+#RUN chmod 777 Anaconda3-2024.02-1-Linux-x86_64.sh
+#RUN sh Anaconda3-2024.02-1-Linux-x86_64.sh -b
+#RUN R CMD INSTALL sybilSBML_3.1.2.tar.gz
+#ADD http://compsysbio.org/bacarena_deps/libSBML_5.18.0.tar.gz /R_packages
+#WORKDIR /R_packages/libsbml-5.20.2
 
 
 
-
-
-CMD ["bash"]
+#RUN sh configure --prefix=/R_packages/libsbml_install \
+#    --enable-cpp-namespace \
+#    --enable-fbc \
+#    --enable-shared \
+#    --with-gnu-ld \
+#    --enable-layout \
+#    --enable-comp \
+#    --enable-qual \
+#    --enable-groups \
+#    --enable-compression \
+#    --enable-shared-version

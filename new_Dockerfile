@@ -48,6 +48,7 @@ RUN apt-get install -y lsb-release
 WORKDIR /R_packages
 RUN apt-get install -y r-base
 ADD https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.0.1.tar.gz /R_packages
+RUN wget https://github.com/sbmlteam/libsbml/archive/refs/tags/v5.20.2.zip -O libsbml_sys.zip /R_packages
 
 #RUN conda env create -f bacarena_env.yml
 RUN conda create --name bacarena_env

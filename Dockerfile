@@ -1,3 +1,5 @@
+#FROM continuumio/anaconda3
+#version 1.0.0: 
 
 #FROM continuumio/miniconda3
 FROM ubuntu:22.04
@@ -44,48 +46,83 @@ RUN apt-get update \
 && apt-get install -y libudunits2-dev
 
 RUN apt-get install -y lsb-release
-#RUN conda install -c conda-forge -y r-sybil
-#RUN conda install -c conda-forge -y r-glpkAPI
-#RUN conda install -c bioconda -y libsbml
-
 RUN apt-get install -y r-base
 
+RUN apt-get install -y libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+WORKDIR /R_packages
+# Install base utilities
+RUN apt-get update \
+    && apt-get install -y build-essential \
+    && apt-get install -y wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install miniconda
+ENV CONDA_DIR /opt/conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda
+
+# Put conda in path so we can use conda activate
+ENV PATH=$CONDA_DIR/bin:$PATH
+
 WORKDIR /R_packages
 
-RUN wget https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz -O libSBML_R_bindings.tar.gz
-RUN wget https://github.com/sbmlteam/libsbml/archive/refs/tags/v5.20.2.zip -O libSBML_sys.zip
-RUN unzip libSBML_sys.zip
+ADD https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.0.1.tar.gz /R_packages
+
+WORKDIR /R_packages
+
+RUN wget https://compsysbio.org/bacarena_deps/libsbml-5.20.2.zip -O libsbml_sys.zip
+RUN unzip libsbml_sys.zip
 WORKDIR libsbml-5.20.2
-RUN sh configure
-RUN make
-RUN make install
+RUN sh configure && make && make install
 RUN ldconfig
-RUN export LD_LIBRARY_PATH=/usr/local/lib
 WORKDIR /R_packages
-RUN R CMD INSTALL libSBML_R_bindings.tar.gz
-#ADD https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz /R_packages
-#ADD http://compsysbio.org/bacarena_deps/sybil_2.2.0.tar.gz /R_packages
-#ADD https://compsysbio.org/bacarena_deps/sybilSBML_3.1.2.tar.gz /R_packages/
+RUN wget https://github.com/sbmlteam/libsbml/releases/download/v5.20.2/libSBML_5.20.2.tar.gz -O libsbml_R_bindings.tar.gz
+RUN R CMD INSTALL libsbml_R_bindings.tar.gz
+ADD http://compsysbio.org/bacarena_deps/sybil_2.2.0.tar.gz /R_packages
+ADD https://compsysbio.org/bacarena_deps/conda_install_pkgs.py /R_packages
+RUN conda create -n bacarena_env
+ARG sybilSBML_string="--with-sbml-include=/opt/conda/bacarena_env/include --with-sbml-lib=/opt/conda/bacarena_env/lib"
+RUN /bin/bash -c "source activate bacarena_env \ 
+&& conda install -c conda-forge -y r-sybil \
+&& conda install -c conda-forge -y r-glpkAPI \
+&& conda install -c bioconda -y libsbml \
+&& R CMD INSTALL --configure-args=${sybilSBML_string} sybilSBML_3.0.1.tar.gz"
 
-#RUN R CMD INSTALL libSBML_5.20.2.tar.gz
-#RUN R CMD INSTALL sybil_2.2.0.tar.gz
-#ADD https://repo.anaconda.com/archive/Anaconda3-2024.02-1-Linux-x86_64.sh /R_packages
-#RUN chmod 777 Anaconda3-2024.02-1-Linux-x86_64.sh
-#RUN sh Anaconda3-2024.02-1-Linux-x86_64.sh -b
-#RUN R CMD INSTALL sybilSBML_3.1.2.tar.gz
-#ADD http://compsysbio.org/bacarena_deps/libSBML_5.18.0.tar.gz /R_packages
-#WORKDIR /R_packages/libsbml-5.20.2
+ADD http://compsysbio.org/bacarena_deps/BacArena_1.8.2.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/ragg_1.2.6.tar.gz /R_packages
+
+ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
+ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
+ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
+
+ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
+ADD https://compsysbio.org/bacarena_deps/install_exp_deps.R /R_packages
+
+RUN Rscript install_bacarena_deps.R
+RUN Rscript install_exp_deps.R
 
 
 
-#RUN sh configure --prefix=/R_packages/libsbml_install \
-#    --enable-cpp-namespace \
-#    --enable-fbc \
-#    --enable-shared \
-#    --with-gnu-ld \
-#    --enable-layout \
-#    --enable-comp \
-#    --enable-qual \
-#    --enable-groups \
-#    --enable-compression \
-#    --enable-shared-version
+#CMD ["source activate bacarena_env"]
+
+#RUN echo "conda activate bacarena_env"
+#RUN echo "source activate bacarena_env"
+#SHELL ["source", "activate", "bacarena_env"]
+#SHELL ["conda", "install", "-c", "conda-forge", "-y", "r-sybil"]
+#CMD ["bash"]
+#RUN python3 conda_install_pkgs.py
+
+
+#RUN conda env create -f bacarena_env.yml
+#RUN conda create --name bacarena_env
+#RUN echo "source activate bacarena_env"
+#ENV PATH /opt/conda/envs/bacarena_env/bin:$PATH
+#RUN echo "source activate bacarena_env" > ~/.bashrc
+#RUN conda install -c conda-forge -y r-sybil
+#RUN conda install -c bioconda -y libsbml
+#RUN conda install -c conda-forge -y r-glpkAPI
+
+#RUN R CMD INSTALL --configure-args="--with-sbml-include=/opt/conda/include --with-sbml-lib=/opt/conda/lib", sybilSBML_3.0.1.tar.gz

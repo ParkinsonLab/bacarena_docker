@@ -96,14 +96,22 @@ ADD http://compsysbio.org/bacarena_deps/RcppArmadillo_0.12.6.4.0.tar.gz /R_packa
 ADD http://compsysbio.org/bacarena_deps/RcppEigen_0.3.3.9.3.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/Rcpp_1.0.10.tar.gz /R_packages
 ADD http://compsysbio.org/bacarena_deps/sf_1.0-8.tar.gz /R_packages
-ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
 
-ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
+ADD https://compsysbio.org/bacarena_deps/install_bacarena_deps.R /R_packages
 ADD https://compsysbio.org/bacarena_deps/install_exp_deps.R /R_packages
 
 RUN Rscript install_bacarena_deps.R
 RUN Rscript install_exp_deps.R
 
+ADD https://compsysbio.org/bacarena_deps/load_bacarena_libs.R /R_packages
+
+WORKDIR /cplex
+ADD http://compsysbio.org/bacarena_deps/installer.properties /cplex
+ADD http://compsysbio.org/bacarena_deps/cplex_studio1210.linux-x86-64.bin /cplex
+ADD http://compsysbio.org/bacarena_deps/cplexAPI_1.4.0.tar.gz /cplex
+
+RUN sh cplex_studio1210.linux-x86-64.bin -i silent -f installer.properties
+RUN R CMD INSTALL --configure-args="--with-cplex-dir='/cplex'" /cplex/cplexAPI_1.4.0.tar.gz
 
 
 #CMD ["source activate bacarena_env"]

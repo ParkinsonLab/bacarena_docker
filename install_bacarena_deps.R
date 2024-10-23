@@ -1,6 +1,6 @@
 
 
-install.packages("systemfonts", "/R_packages", dependencies = TRUE)
+install.packages("systemfonts", "/R_packages", dependencies = TRUE, repos = "http://cran.us.r-project.org")
 install.packages("textshaping", "/R_packages", dependencies = TRUE)
 install.packages("/R_packages/ragg_1.2.6.tar.gz", "/R_packages", repos = NULL, type = "source", dependencies = TRUE)
 install.packages("pkgdown", "/R_packages", dependencies = TRUE)

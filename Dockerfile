@@ -69,4 +69,14 @@ RUN conda install -y conda-forge::r-sybil
 
 RUN  conda install -y bioconda::libsbml
 
+RUN conda install --solver=classic conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
+
+ 
 WORKDIR /R_packages
+RUN wget https://github.com/curl/curl/releases/download/curl-7_55_0/curl-7.55.0.tar.gz \
+&& tar -xzvf curl-7.55.0.tar.gz \
+&& cd curl-7.55.0 \
+&& ./configure \
+&& make \
+&& make install
+

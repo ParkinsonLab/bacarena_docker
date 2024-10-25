@@ -4,3 +4,5 @@ Rcpp_1.0.10.tar.gz
 *.sif
 
 *.xml
+
+curl-7.55.0/

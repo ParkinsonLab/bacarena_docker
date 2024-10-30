@@ -6,3 +6,7 @@ Rcpp_1.0.10.tar.gz
 *.xml
 
 curl-7.55.0/
+
+*.gz
+
+*.deb

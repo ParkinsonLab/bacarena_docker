@@ -103,7 +103,18 @@ RUN wget https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Linux
 RUN wget https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/R%20interface/libSBML_5.18.0.tar.gz
 RUN apt-get install ./libSBML-5.18.0-Linux-x64.deb
 RUN R CMD INSTALL libSBML_5.18.0.tar.gz
-RUN wget https://compsysbio.org/bacarena_deps/install_bacarena_deps.R
+RUN apt-get update \
+&& wget https://compsysbio.org/bacarena_deps/install_bacarena_deps.R
 RUN wget https://compsysbio.org/bacarena_deps/load_bacarena_libs.R
 RUN LD_LIBRARY_PATH=/usr/lib64 Rscript install_bacarena_deps.R
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib64"
+
+
+
+WORKDIR /cplex
+ADD http://compsysbio.org/bacarena_deps/installer.properties /cplex
+ADD http://compsysbio.org/bacarena_deps/cplex_studio1210.linux-x86-64.bin /cplex
+ADD http://compsysbio.org/bacarena_deps/cplexAPI_1.4.0.tar.gz /cplex
+
+RUN sh cplex_studio1210.linux-x86-64.bin -i silent -f installer.properties
+RUN R CMD INSTALL --configure-args="--with-cplex-dir='/cplex'" /cplex/cplexAPI_1.4.0.tar.gz

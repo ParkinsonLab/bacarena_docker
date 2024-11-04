@@ -30,3 +30,4 @@ install.packages("RcppEigen", "/R_packages", dependencies = TRUE, repos = "http:
 install.packages("RcppArmadillo", "/R_packages", dependencies = TRUE, repos = "http://cran.us.r-project.org")
 
 remotes::install_github("euba/BacArena", force = TRUE)
+install.packages("optparse")
